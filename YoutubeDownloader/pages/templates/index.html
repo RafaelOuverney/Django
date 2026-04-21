@@ -1,0 +1,330 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mistral — Converter vídeos e músicas{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="hero-inner">
+        <div class="hero-label">MISTRAL DOWNLOADER</div>
+        <h1 class="hero-title">Baixe suas músicas e vídeos <span class="title-highlight">instantaneamente.</span></h1>
+
+        <form id="downloadForm" class="hero-form">
+            <input type="hidden" name="format" id="formatInput" value="mp4">
+
+            <div class="input-group">
+                <input type="text" id="urlInput" name="url" class="hero-input"
+                    placeholder="Cole YouTube, Spotify ou link de vídeo aqui..." required>
+                <button type="button" class="capture-btn" id="downloadBtn">Download</button>
+            </div>
+        </form>
+
+        <p class="hero-support">Baixe seus vídeos e músicas favoritos com qualidade</p>
+    </div>
+</section>
+
+<!-- Modal de Formato - Fora da hero-section -->
+<div id="formatModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Escolha o Formato</h2>
+            <button class="modal-close" id="closeModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="format-group">
+                <h3>Vídeo</h3>
+                <div class="format-options">
+                    <label class="format-option">
+                        <input type="radio" name="formatChoice" value="mp4">
+                        <span>MP4 (H.264)</span>
+                        <small>Melhor compatibilidade</small>
+                    </label>
+                    <label class="format-option">
+                        <input type="radio" name="formatChoice" value="webm">
+                        <span>WebM</span>
+                        <small>Menor tamanho</small>
+                    </label>
+                    <label class="format-option">
+                        <input type="radio" name="formatChoice" value="avi">
+                        <span>AVI</span>
+                        <small>Formato clássico</small>
+                    </label>
+                    <label class="format-option">
+                        <input type="radio" name="formatChoice" value="mov">
+                        <span>MOV</span>
+                        <small>QuickTime</small>
+                    </label>
+                </div>
+            </div>
+
+            <div class="format-group">
+                <h3>Áudio</h3>
+                <div class="format-options">
+                    <label class="format-option">
+                        <input type="radio" name="formatChoice" value="mp3">
+                        <span>MP3</span>
+                        <small>Mais compatível</small>
+                    </label>
+                    <label class="format-option">
+                        <input type="radio" name="formatChoice" value="wav">
+                        <span>WAV</span>
+                        <small>Sem compressão</small>
+                    </label>
+                    <label class="format-option">
+                        <input type="radio" name="formatChoice" value="aac">
+                        <span>AAC</span>
+                        <small>Melhor qualidade</small>
+                    </label>
+                    <label class="format-option">
+                        <input type="radio" name="formatChoice" value="flac">
+                        <span>FLAC</span>
+                        <small>Lossless</small>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn-cancel" id="cancelDownload">Cancelar</button>
+            <button type="button" class="btn-download" id="confirmDownload">Confirmar Download</button>
+        </div>
+    </div>
+</div>
+
+<section class="platforms-section">
+    <div class="section-inner">
+        <h2 class="section-title">Plataformas Suportadas</h2>
+        <p class="section-desc">Converter vídeos e músicas de várias plataformas com qualidade.</p>
+
+        <div class="platforms-grid">
+            <div class="platform-box">
+                <div class="platform-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                        fill="currentColor" class="bi bi-youtube" viewBox="0 0 16 16">
+                        <path
+                            d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z" />
+                    </svg></div><span>YouTube</span>
+            </div>
+            <div class="platform-box">
+                <div class="platform-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                        fill="currentColor" class="bi bi-spotify" viewBox="0 0 16 16">
+                        <path
+                            d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.669 11.538a.5.5 0 0 1-.686.165c-1.879-1.147-4.243-1.407-7.028-.77a.499.499 0 0 1-.222-.973c3.048-.696 5.662-.397 7.77.892a.5.5 0 0 1 .166.686m.979-2.178a.624.624 0 0 1-.858.205c-2.15-1.321-5.428-1.704-7.972-.932a.625.625 0 0 1-.362-1.194c2.905-.881 6.517-.454 8.986 1.063a.624.624 0 0 1 .206.858m.084-2.268C10.154 5.56 5.9 5.419 3.438 6.166a.748.748 0 1 1-.434-1.432c2.825-.857 7.523-.692 10.492 1.07a.747.747 0 1 1-.764 1.288" />
+                    </svg></div><span>Spotify</span>
+            </div>
+            <div class="platform-box">
+                <div class="platform-icon">
+                    <svg fill="white" width="32" height="32" viewBox="-271 345.8 256 111.2" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <path d="M-238.4,398.1c-0.8,0-1.4,0.6-1.5,1.5l-2.3,28l2.3,27.1c0.1,0.8,0.7,1.5,1.5,1.5c0.8,0,1.4-0.6,1.5-1.5l2.6-27.1l-2.6-28C-237,398.7-237.7,398.1-238.4,398.1z"/>
+                            <path d="M-228.2,399.9c-0.9,0-1.7,0.7-1.7,1.7l-2.1,26l2.1,27.3c0.1,1,0.8,1.7,1.7,1.7c0.9,0,1.6-0.7,1.7-1.7l2.4-27.3l-2.4-26C-226.6,400.6-227.3,399.9-228.2,399.9z"/>
+                            <path d="M-258.6,403.5c-0.5,0-1,0.4-1.1,1l-2.5,23l2.5,22.5c0.1,0.6,0.5,1,1.1,1c0.5,0,1-0.4,1.1-1l2.9-22.5l-2.9-23C-257.7,404-258.1,403.5-258.6,403.5z"/>
+                            <path d="M-268.1,412.3c-0.5,0-1,0.4-1,1l-1.9,14.3l1.9,14c0.1,0.6,0.5,1,1,1s0.9-0.4,1-1l2.2-14l-2.2-14.2C-267.2,412.8-267.6,412.3-268.1,412.3z"/>
+                            <path d="M-207.5,373.5c-1.2,0-2.1,0.9-2.2,2.1l-1.9,52l1.9,27.2c0.1,1.2,1,2.1,2.2,2.1s2.1-0.9,2.2-2.1l2.1-27.2l-2.1-52C-205.4,374.4-206.4,373.5-207.5,373.5z"/>
+                            <path d="M-248.6,399c-0.7,0-1.2,0.5-1.3,1.3l-2.4,27.3l2.4,26.3c0.1,0.7,0.6,1.3,1.3,1.3c0.7,0,1.2-0.5,1.3-1.2l2.7-26.3l-2.7-27.3C-247.4,399.6-247.9,399-248.6,399z"/>
+                            <path d="M-217.9,383.4c-1,0-1.9,0.8-1.9,1.9l-2,42.3l2,27.3c0.1,1.1,0.9,1.9,1.9,1.9s1.9-0.8,1.9-1.9l2.3-27.3l-2.3-42.3C-216,384.2-216.9,383.4-217.9,383.4z"/>
+                            <path d="M-154.4,359.3c-1.8,0-3.2,1.4-3.2,3.2l-1.2,65l1.2,26.1c0,1.8,1.5,3.2,3.2,3.2c1.8,0,3.2-1.5,3.2-3.2l1.4-26.1l-1.4-65C-151.1,360.8-152.6,359.3-154.4,359.3z"/>
+                            <path d="M-197.1,368.9c-1.3,0-2.3,1-2.4,2.4l-1.8,56.3l1.8,26.9c0,1.3,1.1,2.3,2.4,2.3s2.3-1,2.4-2.4l2-26.9l-2-56.3C-194.7,370-195.8,368.9-197.1,368.9z"/>
+                            <path d="M-46.5,394c-4.3,0-8.4,0.9-12.2,2.4C-61.2,368-85,345.8-114,345.8c-7.1,0-14,1.4-20.1,3.8c-2.4,0.9-3,1.9-3,3.7v99.9c0,1.9,1.5,3.5,3.4,3.7c0.1,0,86.7,0,87.3,0c17.4,0,31.5-14.1,31.5-31.5C-15,408.1-29.1,394-46.5,394z"/>
+                            <path d="M-143.6,353.2c-1.9,0-3.4,1.6-3.5,3.5l-1.4,70.9l1.4,25.7c0,1.9,1.6,3.4,3.5,3.4c1.9,0,3.4-1.6,3.5-3.5l1.5-25.8l-1.5-70.9C-140.2,354.8-141.7,353.2-143.6,353.2z"/>
+                            <path d="M-186.5,366.8c-1.4,0-2.5,1.1-2.6,2.6l-1.6,58.2l1.6,26.7c0,1.4,1.2,2.6,2.6,2.6s2.5-1.1,2.6-2.6l1.8-26.7l-1.8-58.2C-184,367.9-185.1,366.8-186.5,366.8z"/>
+                            <path d="M-175.9,368.1c-1.5,0-2.8,1.2-2.8,2.8l-1.5,56.7l1.5,26.5c0,1.6,1.3,2.8,2.8,2.8s2.8-1.2,2.8-2.8l1.7-26.5l-1.7-56.7C-173.1,369.3-174.3,368.1-175.9,368.1z"/>
+                            <path d="M-165.2,369.9c-1.7,0-3,1.3-3,3l-1.4,54.7l1.4,26.3c0,1.7,1.4,3,3,3c1.7,0,3-1.3,3-3l1.5-26.3l-1.5-54.7C-162.2,371.3-163.5,369.9-165.2,369.9z"/>
+                        </g>
+                    </svg>
+                </div>
+                <span>SoundCloud</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features-section">
+    <div class="section-inner">
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="card-label">Qualidade</div>
+                <h3>Fidelidade Sem Compromissos</h3>
+                <p>Baixe em qualidade máxima</p>
+                <div class="card-tags"><span>1080p Support</span><span>FLAC</span></div>
+            </div>
+
+            <div class="feature-card">
+                <div class="card-label">DESEMPENHO</div>
+                <h3>Processamento Rápido</h3>
+                <p>Alta velocidade de processamento e download</p>
+                <div class="gauge-container">
+                    <div class="gauge-bar"></div>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="card-label">ORGANIZAÇÃO</div>
+                <h3>Metadados Automáticos</h3>
+                <p>O Mistral extrai automaticamente informações de álbum, arte, títulos e créditos.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="section-inner cta-inner">
+        <h2 class="cta-title">Crie sua propria <span class="cta-accent">biblioteca de conteúdos</span></h2>
+        <p class="cta-subtitle">Organize e acesse seu conteúdo favorito de forma simples e eficiente.</p>
+
+        <div class="cta-buttons">
+            <button class="btn-primary">Criar Conta Gratuita</button>
+            <button class="btn-secondary">Saber Mais</button>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Controle do Modal de Formato
+    const downloadBtn = document.getElementById('downloadBtn');
+    const formatModal = document.getElementById('formatModal');
+    const closeModal = document.getElementById('closeModal');
+    const cancelDownload = document.getElementById('cancelDownload');
+    const confirmDownload = document.getElementById('confirmDownload');
+    const urlInput = document.getElementById('urlInput');
+    const downloadForm = document.getElementById('downloadForm');
+    const formatInput = document.getElementById('formatInput');
+
+    // Verificar que elementos existem
+    console.log('Modal elementos carregados:', {
+        downloadBtn,
+        formatModal,
+        urlInput
+    });
+
+    // Abrir modal ao clicar no botão Download
+    downloadBtn.addEventListener('click', function() {
+        console.log('Botão Download clicado');
+        const url = urlInput.value.trim();
+        console.log('URL:', url);
+        
+        // Validar URL
+        if (!url) {
+            alert('Por favor, insira uma URL válida!');
+            return;
+        }
+
+        console.log('Abrindo modal...');
+        
+        // Selecionar mp4 como padrão
+        const defaultFormat = document.querySelector('input[name="formatChoice"][value="mp4"]');
+        if (defaultFormat) defaultFormat.checked = true;
+        
+        // Abrir modal
+        formatModal.classList.add('active');
+        document.body.classList.add('modal-open');
+        
+        console.log('Modal aberto, classes:', formatModal.className);
+    });
+
+    // Fechar modal
+    function closeFormatModal() {
+        formatModal.classList.remove('active');
+        document.body.classList.remove('modal-open');
+    }
+
+    closeModal.addEventListener('click', closeFormatModal);
+    cancelDownload.addEventListener('click', closeFormatModal);
+
+    // Confirmar download
+    confirmDownload.addEventListener('click', function() {
+        const selectedFormat = document.querySelector('input[name="formatChoice"]:checked');
+        
+        if (!selectedFormat) {
+            alert('Por favor, selecione um formato!');
+            return;
+        }
+
+        // Atualizar o formato no input hidden
+        formatInput.value = selectedFormat.value;
+        
+        // Mostrar mensagem de processamento
+        confirmDownload.disabled = true;
+        confirmDownload.textContent = 'Processando...';
+        
+        // Submeter formulário
+        downloadForm.method = 'POST';
+        downloadForm.action = '';
+        
+        // Criar FormData para manter o arquivo
+        const formData = new FormData(downloadForm);
+        
+        // Fazer POST
+        fetch(downloadForm.action || '/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    throw new Error(data.error || 'Erro ao processar download');
+                });
+            }
+            return response.blob().then(blob => ({ blob, response }));
+        })
+        .then(({ blob, response }) => {
+            // Criar URL temporária para download
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            
+            // Extrair nome do arquivo da header Content-Disposition
+            const contentDisposition = response.headers.get('Content-Disposition');
+            let filename = 'download';
+            if (contentDisposition) {
+                const filenameMatch = contentDisposition.match(/filename="?([^"]+)"?/);
+                if (filenameMatch) {
+                    filename = filenameMatch[1];
+                }
+            }
+            
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(link);
+            
+            closeFormatModal();
+        })
+        .catch(error => {
+            alert('Erro: ' + error.message);
+        })
+        .finally(() => {
+            confirmDownload.disabled = false;
+            confirmDownload.textContent = 'Confirmar Download';
+        });
+    });
+
+    // Fechar modal ao clicar fora dele
+    formatModal.addEventListener('click', function(event) {
+        if (event.target === formatModal) {
+            closeFormatModal();
+        }
+    });
+
+    // Função para obter CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+
+{% endblock %}
