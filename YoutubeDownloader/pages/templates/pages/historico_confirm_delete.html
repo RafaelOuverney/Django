@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section-inner" style="padding: 40px 20px;">
+  <div class="container">
+    <h1>Confirmar Exclusão</h1>
+    <p>Tem certeza que deseja excluir "{{ object }}"?</p>
+    <form method="post">{% csrf_token %}
+      <button type="submit" class="btn-download">Excluir</button>
+      <a href="{% url 'historico_detail' object.pk %}" class="btn-link">Cancelar</a>
+    </form>
+  </div>
+</section>
+{% endblock %}

@@ -1,4 +1,5 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 from django.http import JsonResponse, FileResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
@@ -10,6 +11,15 @@ from pathlib import Path
 
 class IndexView(TemplateView):
     template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            from .models import Historico
+            context['recent_historicos'] = Historico.objects.all()[:5]
+        except Exception:
+            context['recent_historicos'] = []
+        return context
 
     def post(self, request, *args, **kwargs):
         try:
@@ -85,3 +95,39 @@ class SobreView(TemplateView):
 
 class AjudaView(TemplateView):
     template_name = 'ajuda.html'
+
+
+# CRUD for Historico
+from .models import Historico
+
+
+class HistoricoListView(ListView):
+    model = Historico
+    template_name = 'pages/historico_list.html'
+    context_object_name = 'historicos'
+
+
+class HistoricoDetailView(DetailView):
+    model = Historico
+    template_name = 'pages/historico_detail.html'
+    context_object_name = 'historico'
+
+
+class HistoricoCreateView(CreateView):
+    model = Historico
+    fields = ['title', 'url', 'format', 'file_path']
+    template_name = 'pages/historico_form.html'
+    success_url = reverse_lazy('historico_list')
+
+
+class HistoricoUpdateView(UpdateView):
+    model = Historico
+    fields = ['title', 'url', 'format', 'file_path']
+    template_name = 'pages/historico_form.html'
+    success_url = reverse_lazy('historico_list')
+
+
+class HistoricoDeleteView(DeleteView):
+    model = Historico
+    template_name = 'pages/historico_confirm_delete.html'
+    success_url = reverse_lazy('historico_list')

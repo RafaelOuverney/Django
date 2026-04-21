@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section-inner" style="padding: 40px 20px;">
+  <div class="container">
+    <h1>{% if form.instance.pk %}Editar{% else %}Adicionar{% endif %} Histórico</h1>
+    <form method="post">{% csrf_token %}
+      {{ form.as_p }}
+      <div style="margin-top: 16px;">
+        <button type="submit" class="btn-primary">Salvar</button>
+        <a href="{% url 'historico_list' %}" class="btn-link">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

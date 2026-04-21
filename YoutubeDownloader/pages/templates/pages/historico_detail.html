@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section-inner" style="padding: 40px 20px;">
+  <div class="container">
+    <h1>{{ historico.title }}</h1>
+    <p><strong>URL:</strong> <a href="{{ historico.url }}" target="_blank">{{ historico.url }}</a></p>
+    <p><strong>Formato:</strong> {{ historico.format }}</p>
+    <p><strong>Criado em:</strong> {{ historico.created_at }}</p>
+    <p>
+      <a href="{% url 'historico_edit' historico.pk %}" class="btn-secondary">Editar</a>
+      <a href="{% url 'historico_delete' historico.pk %}" class="btn-cancel">Excluir</a>
+      <a href="{% url 'historico_list' %}" class="btn-link">Voltar</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

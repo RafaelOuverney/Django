@@ -23,6 +23,23 @@
     </div>
 </section>
 
+<!-- Recentes do Histórico -->
+{% if recent_historicos %}
+<section class="recent-history" style="padding: 30px 20px;">
+    <div class="section-inner">
+        <h2 class="section-title">Últimos Downloads</h2>
+        <ul style="max-width:800px;margin:0 auto;list-style:none;padding:0;">
+            {% for item in recent_historicos %}
+                <li style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+                    <a href="{% url 'historico_detail' item.pk %}" style="color:var(--neon-cyan);font-weight:700;">{{ item.title }}</a>
+                    <div style="color:var(--muted);font-size:0.9rem;">{{ item.format }} • {{ item.created_at|date:"d/m/Y H:i" }}</div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+{% endif %}
+
 <!-- Modal de Formato - Fora da hero-section -->
 <div id="formatModal" class="modal">
     <div class="modal-content">

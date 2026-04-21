@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="section-inner" style="padding: 40px 20px;">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+      <h1 style="margin:0">Histórico</h1>
+      <a href="{% url 'historico_add' %}" class="btn-primary">Adicionar novo</a>
+    </div>
+
+    <ul class="historico-list">
+      {% for item in historicos %}
+        <li class="historico-item">
+          <div class="historico-main">
+            <a href="{% url 'historico_detail' item.pk %}" class="historico-title">{{ item.title }}</a>
+            <div class="historico-meta">{{ item.format }} • {{ item.created_at|date:"d/m/Y H:i" }}</div>
+            <div class="historico-url">{{ item.url }}</div>
+          </div>
+          <div class="historico-actions">
+            <a href="{% url 'historico_edit' item.pk %}" class="btn-secondary btn-small">Editar</a>
+            <a href="{% url 'historico_delete' item.pk %}" class="btn-cancel btn-small">Excluir</a>
+          </div>
+        </li>
+      {% empty %}
+        <li class="historico-empty">Nenhum registro encontrado.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endblock %}
